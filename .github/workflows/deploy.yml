@@ -1,0 +1,29 @@
+name: Desplegar a InfinityFree
+
+on:
+  push:
+    branches:
+      - main # Si tu rama principal se llama master, cambia 'main' por 'master'
+
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Obtener código del repositorio
+      uses: actions/checkout@v4
+
+    - name: Sincronizar archivos por FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftps
+        server-dir: htdocs/
+        exclude: |
+          **/.git*
+          **/.github/**
+          dyd.sql
+          usuarios.txt
+          admin/base de datos.txt

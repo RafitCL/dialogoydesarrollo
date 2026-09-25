@@ -1,0 +1,12 @@
+# Se sirve la vista pública del portal
+DirectoryIndex index.php
+
+# Sirve el sitemap generado dinámicamente bajo la URL sitemap.xml
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# Bloquear acceso directo a archivos sensibles del panel
+<FilesMatch "^(config\.php|auth\.php|_publicar_helper\.php)$">
+    Require all denied
+</FilesMatch>
