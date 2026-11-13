@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['agregar_autor'])) {
                             : ($editando && isset($editado['foto']) && $editado['foto'] !== null ? $editado['foto'] : '');
 
                         if ($editando) {
-                            $stmt = db()->prepare('UPDATE noticias SET titulo = :t, foto = :foto, link_externo = :link, fecha_publicacion = :fecha, activo = :activo, updated_at = NOW() WHERE id = :id');
+                            $stmt = db()->prepare('UPDATE noticias SET titulo = :t, foto = :foto, link_externo = :link, fecha_publicacion = :fecha, activo = :activo WHERE id = :id');
                             $stmt->execute(['t' => $titulo, 'foto' => $fotoNoticia !== '' ? $fotoNoticia : null, 'link' => $link, 'fecha' => $fechaDb, 'activo' => $activo, 'id' => $editId]);
                             if (($_FILES['foto'] ?? [])['error'] === UPLOAD_ERR_OK) {
                                 guardar_foto('noticia', $editId, $fotoNoticia, $titulo);
@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['agregar_autor'])) {
                             : ($editando ? $editado['pdf_adjunto'] : '');
 
                         if ($editando) {
-                            $stmt = db()->prepare('UPDATE reportajes SET titulo = :t, resumen_corto = :res, desarrollo = :dev, foto_principal = :f, pdf_adjunto = :pdf, fecha_publicacion = :fecha, es_destacado = :dest, autor_id = :autor, activo = :activo, updated_at = NOW() WHERE id = :id');
+                            $stmt = db()->prepare('UPDATE reportajes SET titulo = :t, resumen_corto = :res, desarrollo = :dev, foto_principal = :f, pdf_adjunto = :pdf, fecha_publicacion = :fecha, es_destacado = :dest, autor_id = :autor, activo = :activo WHERE id = :id');
                             $stmt->execute(['t' => $titulo, 'res' => $resumen !== '' ? $resumen : null, 'dev' => $desarrollo, 'f' => $ruta, 'pdf' => $pdf !== '' ? $pdf : null, 'fecha' => $fechaDb, 'dest' => $esDestacado, 'autor' => $autorId, 'activo' => $activo, 'id' => $editId]);
                             if ($hayFoto) {
                                 guardar_foto('reportaje', $editId, $ruta, $titulo);
@@ -198,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['agregar_autor'])) {
                         $resumen = trim($_POST['resumen'] ?? '');
 
                         if ($editando) {
-                            $stmt = db()->prepare('UPDATE boletines SET numero_boletin = :t, resumen = :res, foto_portada = :f, archivo_pdf = :pdf, fecha_publicacion = :fecha, activo = :activo, updated_at = NOW() WHERE id = :id');
+                            $stmt = db()->prepare('UPDATE boletines SET numero_boletin = :t, resumen = :res, foto_portada = :f, archivo_pdf = :pdf, fecha_publicacion = :fecha, activo = :activo WHERE id = :id');
                             $stmt->execute(['t' => $titulo, 'res' => $resumen !== '' ? $resumen : null, 'f' => $ruta, 'pdf' => $pdf, 'fecha' => $fechaDb, 'activo' => $activo, 'id' => $editId]);
                             if ($hayFoto) {
                                 guardar_foto('boletin', $editId, $ruta, $titulo);
@@ -217,9 +217,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['agregar_autor'])) {
                     }
                     if ($editando) {
                         if ($tipo === 'podcast') {
-                            $stmt = db()->prepare('UPDATE podcasts SET titulo = :t, url_embed = :url, fecha_publicacion = :fecha, activo = :activo, updated_at = NOW() WHERE id = :id');
+                            $stmt = db()->prepare('UPDATE podcasts SET titulo = :t, url_embed = :url, fecha_publicacion = :fecha, activo = :activo WHERE id = :id');
                         } else {
-                            $stmt = db()->prepare('UPDATE videos SET titulo = :t, url_embed = :url, fecha_publicacion = :fecha, activo = :activo, updated_at = NOW() WHERE id = :id');
+                            $stmt = db()->prepare('UPDATE videos SET titulo = :t, url_embed = :url, fecha_publicacion = :fecha, activo = :activo WHERE id = :id');
                         }
                         $stmt->execute(['t' => $titulo, 'url' => $url, 'fecha' => $fechaDb, 'activo' => $activo, 'id' => $editId]);
                     } else {

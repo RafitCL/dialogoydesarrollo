@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 session_start();
 
-// Configuración de Base de Datos para InfinityFree
-const DB_HOST = 'sql311.infinityfree.com';
-const DB_PORT = '3306';
-const DB_NAME = 'if0_43005144_db_DialogoDesarrollo';
-const DB_USER = 'if0_43005144';
-const DB_PASS = 'rIlSatdku1l'; // Tu contraseña de Hosting/FTP
-
-// URL del sitio con el dominio gratuito de InfinityFree
-const SITE_URL = 'http://dialogoydesarrollo-rcl.rf.gd';
+// Configuración de Base de Datos.
+// Se leen primero las variables de entorno (AWS/producción) y, si no existen,
+// se usan los valores por defecto para desarrollo local / InfinityFree.
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_PORT', getenv('DB_PORT') ?: '3306');
+define('DB_NAME', getenv('DB_NAME') ?: 'dialogoydesarrollo');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('SITE_URL', getenv('SITE_URL') ?: 'http://localhost/dialogoydesarrollo');
 
 function db(): PDO
 {

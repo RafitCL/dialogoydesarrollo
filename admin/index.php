@@ -97,11 +97,11 @@ $chartLabelsJson = json_encode($chartLabels, JSON_HEX_TAG | JSON_HEX_APOS | JSON
 $chartDataJson   = json_encode($chartData);
 
 $actualizaciones = db()->query("SELECT tipo, titulo, fecha FROM (
-    SELECT 'Reportaje' AS tipo, titulo, COALESCE(created_at, updated_at, fecha_publicacion) AS fecha FROM reportajes
-    UNION ALL SELECT 'Noticia', titulo, COALESCE(created_at, updated_at, fecha_publicacion) FROM noticias
-    UNION ALL SELECT 'Boletin', numero_boletin, COALESCE(created_at, updated_at, fecha_publicacion) FROM boletines
-    UNION ALL SELECT 'Podcast', titulo, COALESCE(created_at, updated_at, fecha_publicacion) FROM podcasts
-    UNION ALL SELECT 'Video', titulo, COALESCE(created_at, updated_at, fecha_publicacion) FROM videos
+    SELECT 'Reportaje' AS tipo, titulo, fecha_publicacion AS fecha FROM reportajes
+    UNION ALL SELECT 'Noticia', titulo, fecha_publicacion FROM noticias
+    UNION ALL SELECT 'Boletin', numero_boletin, fecha_publicacion FROM boletines
+    UNION ALL SELECT 'Podcast', titulo, fecha_publicacion FROM podcasts
+    UNION ALL SELECT 'Video', titulo, fecha_publicacion FROM videos
 ) u ORDER BY fecha DESC LIMIT 5")->fetchAll();
 
 $tipoClass = [

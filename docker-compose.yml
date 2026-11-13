@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: dialogoydesarrollo
+      DB_USER: ddp
+      DB_PASS: ddp_pass
+      SITE_URL: http://localhost:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/var/www/html/uploads
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: dialogoydesarrollo
+      MYSQL_USER: ddp
+      MYSQL_PASSWORD: ddp_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./deploy/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  db_data:
