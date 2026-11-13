@@ -1,29 +1,21 @@
-name: Desplegar a InfinityFree
+name: Deploy to AWS EC2
 
 on:
   push:
-    branches:
-      - main # Si tu rama principal se llama master, cambia 'main' por 'master'
+    branches: [ main ]
 
 jobs:
-  web-deploy:
-    name: Deploy
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Obtener código del repositorio
-      uses: actions/checkout@v4
-
-    - name: Sincronizar archivos por FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps
-        server-dir: htdocs/
-        exclude: |
-          **/.git*
-          **/.github/**
-          dyd.sql
-          usuarios.txt
-          admin/base de datos.txt
+      - name: Actualizar código en EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USER }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          script: |
+            cd /var/www/html
+            sudo git pull origin main
+            sudo chown -R www-data:www-data /var/www/html
+            sudo chmod -R 775 /var/www/html/uploads
